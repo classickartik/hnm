@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Home n More – Curated furniture, decor, and everything your home deserves. Shop timeless pieces crafted for modern living." />
+  <title>Home n More | Curated Living Essentials</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:        #532100;
+      --primary-dark:   #3a1700;
+      --primary-light:  #7a3200;
+      --primary-pale:   #f9ede5;
+      --accent:         #c98a4b;
+      --accent-light:   #e8b97a;
+      --cream:          #fdf8f3;
+      --sand:           #f3ebe0;
+      --text:           #2c1a0e;
+      --text-muted:     #7a6555;
+      --white:          #ffffff;
+      --shadow-sm:      0 1px 4px rgba(83,33,0,.08);
+      --shadow-md:      0 4px 20px rgba(83,33,0,.12);
+      --shadow-lg:      0 12px 48px rgba(83,33,0,.16);
+      --radius:         12px;
+      --radius-lg:      20px;
+      --transition:     .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 5vw, 2.5rem);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); }
+    .btn-light { background: var(--white); color: var(--primary); }
+    .btn-light:hover { background: var(--cream); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+    .section-label { font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.2; color: var(--text); }
+    .section-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; }
+    .section-header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 3.5rem; }
+    .divider { width: 56px; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 99px; }
+
+    .nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(83,33,0,.06);
+      transition: box-shadow var(--transition);
+    }
+    .nav.scrolled { box-shadow: var(--shadow-md); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 2rem; }
+    .nav-logo { display: flex; align-items: center; gap: .75rem; flex-shrink: 0; }
+    .nav-logo-mark { width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .nav-logo-mark svg { fill: var(--white); }
+    .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--primary); }
+    .nav-logo-text span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 2.25rem; list-style: none; }
+    .nav-links a { font-size: .9rem; font-weight: 500; color: var(--text-muted); transition: color var(--transition); }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--primary); border-radius: 2px; transition: var(--transition); }
+
+    .mobile-drawer {
+      display: none; position: fixed; inset: 72px 0 0; background: var(--white);
+      z-index: 99; padding: 2rem; flex-direction: column; gap: 1.5rem;
+      transform: translateX(100%); transition: transform var(--transition);
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer a { font-size: 1.1rem; font-weight: 500; color: var(--text); padding: .5rem 0; border-bottom: 1px solid var(--sand); }
+
+    .hero {
+      padding-top: 72px; min-height: 100svh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; background: var(--cream);
+      overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -120px; right: -120px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,138,75,.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-content { padding-block: 5rem; display: flex; flex-direction: column; gap: 1.75rem; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--primary-pale); color: var(--primary);
+      padding: .4rem 1rem; border-radius: 50px; font-size: .8rem; font-weight: 600; width: fit-content;
+    }
+    .hero-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--primary);
+      border-radius: 50%; animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(1.4); }
+    }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5.5vw, 4.2rem); font-weight: 700; line-height: 1.1; color: var(--text); }
+    .hero-title em { font-style: normal; color: var(--primary); }
+    .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 480px; line-height: 1.75; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 2.5rem; padding-top: .5rem; }
+    .stat-value { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: .8rem; color: var(--text-muted); margin-top: 2px; }
+    .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; height: 100%; min-height: 600px; }
+    .hero-img-wrap { position: relative; width: 100%; max-width: 520px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); }
+    .hero-svg-room { width: 100%; aspect-ratio: 4/3; background: var(--sand); }
+    .hero-float-card {
+      position: absolute; bottom: 2.5rem; left: -2rem;
+      background: var(--white); border-radius: var(--radius); padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: .75rem; min-width: 200px;
+    }
+    .hero-float-icon { width: 44px; height: 44px; background: var(--primary-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hero-float-label { font-size: .72rem; color: var(--text-muted); }
+    .hero-float-value { font-size: .95rem; font-weight: 600; color: var(--text); }
+    .hero-float-card2 {
+      position: absolute; top: 2rem; right: -1.5rem;
+      background: var(--primary); color: var(--white);
+      border-radius: var(--radius); padding: 1rem 1.25rem; box-shadow: var(--shadow-lg);
+    }
+    .hero-float-card2 .big { font-size: 1.4rem; font-weight: 700; }
+    .hero-float-card2 .small { font-size: .75rem; opacity: .8; }
+
+    .trust-bar { background: var(--primary); color: var(--white); padding: 1.1rem 0; overflow: hidden; }
+    .trust-track { display: flex; gap: 4rem; align-items: center; animation: ticker 28s linear infinite; width: max-content; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .trust-item { display: flex; align-items: center; gap: .6rem; font-size: .85rem; font-weight: 500; white-space: nowrap; opacity: .9; }
+    .trust-dot { width: 6px; height: 6px; background: var(--accent-light); border-radius: 50%; flex-shrink: 0; }
+
+    .categories { padding: 6rem 0; background: var(--white); }
+    .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .cat-card {
+      background: var(--sand); border-radius: var(--radius-lg); padding: 2.25rem 1.5rem;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
+      cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; border: 2px solid transparent;
+    }
+    .cat-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .cat-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .cat-card:hover::before { opacity: .07; }
+    .cat-icon { width: 56px; height: 56px; background: var(--white); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); position: relative; z-index: 1; }
+    .cat-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; position: relative; z-index: 1; }
+    .cat-count { font-size: .8rem; color: var(--text-muted); position: relative; z-index: 1; }
+    .cat-arrow { margin-top: auto; width: 32px; height: 32px; background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: var(--transition); }
+    .cat-card:hover .cat-arrow { background: var(--primary); }
+    .cat-card:hover .cat-arrow svg { stroke: var(--white); }
+
+    .products { padding: 6rem 0; background: var(--cream); }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .product-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition); cursor: pointer; }
+    .product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .product-img { position: relative; overflow: hidden; aspect-ratio: 4/3; background: var(--sand); }
+    .product-img svg { width: 100%; height: 100%; }
+    .product-badge { position: absolute; top: 1rem; left: 1rem; background: var(--primary); color: var(--white); font-size: .72rem; font-weight: 600; padding: .3rem .75rem; border-radius: 50px; }
+    .product-wishlist {
+      position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
+      background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-sm); transition: var(--transition); border: none; cursor: pointer;
+    }
+    .product-wishlist:hover { background: var(--primary); }
+    .product-wishlist:hover svg { stroke: var(--white); }
+    .product-body { padding: 1.5rem; }
+    .product-category { font-size: .75rem; color: var(--accent); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; margin: .35rem 0 .5rem; }
+    .product-rating { display: flex; align-items: center; gap: .4rem; font-size: .82rem; color: var(--text-muted); }
+    .stars { color: #f59e0b; letter-spacing: 1px; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; }
+    .product-price { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+    .product-price-old { font-size: .85rem; color: var(--text-muted); text-decoration: line-through; margin-left: .4rem; font-weight: 400; }
+    .product-add { width: 42px; height: 42px; background: var(--primary); color: var(--white); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .product-add:hover { background: var(--primary-dark); transform: scale(1.1); }
+
+    .why { padding: 6rem 0; background: var(--white); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .why-visual { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .why-img-card { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 3/4; background: var(--sand); }
+    .why-img-card:first-child { margin-top: 2.5rem; }
+    .why-img-card svg { width: 100%; height: 100%; }
+    .why-badge {
+      position: absolute; bottom: -1rem; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: var(--white); padding: 1rem 1.75rem;
+      border-radius: var(--radius); text-align: center; box-shadow: var(--shadow-lg); white-space: nowrap;
+    }
+    .why-badge .num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; }
+    .why-badge .lbl { font-size: .75rem; opacity: .85; }
+    .why-content { display: flex; flex-direction: column; gap: 2rem; }
+    .why-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .why-icon { width: 52px; height: 52px; background: var(--primary-pale); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .why-item-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: .35rem; }
+    .why-item-desc { font-size: .9rem; color: var(--text-muted); line-height: 1.7; }
+
+    .testimonials { padding: 6rem 0; background: var(--primary); color: var(--white); position: relative; overflow: hidden; }
+    .testimonials::before {
+      content: '"'; position: absolute; top: -1rem; left: 2rem;
+      font-family: 'Playfair Display', serif; font-size: 20rem;
+      color: rgba(255,255,255,.04); line-height: 1; pointer-events: none;
+    }
+    .testimonials .section-label { color: var(--accent-light); }
+    .testimonials .section-title { color: var(--white); }
+    .testimonials .divider { background: linear-gradient(90deg, var(--accent-light), transparent); }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .testi-card {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-lg); padding: 2rem; backdrop-filter: blur(8px); transition: var(--transition);
+    }
+    .testi-card:hover { background: rgba(255,255,255,.13); transform: translateY(-4px); }
+    .testi-stars { color: var(--accent-light); font-size: 1rem; letter-spacing: 2px; margin-bottom: 1rem; }
+    .testi-text { font-size: .95rem; line-height: 1.75; opacity: .9; margin-bottom: 1.5rem; }
+    .testi-author { display: flex; align-items: center; gap: .875rem; }
+    .testi-avatar { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .95rem; flex-shrink: 0; }
+    .testi-name { font-weight: 600; font-size: .95rem; }
+    .testi-role { font-size: .78rem; opacity: .65; margin-top: 2px; }
+
+    .newsletter { padding: 5rem 0; background: var(--sand); }
+    .newsletter-inner {
+      background: var(--white); border-radius: var(--radius-lg); padding: 3.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; box-shadow: var(--shadow-md);
+    }
+    .newsletter-form { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .newsletter-input {
+      flex: 1; min-width: 200px; padding: .85rem 1.25rem;
+      border: 2px solid var(--sand); border-radius: 50px;
+      font-family: 'Inter', sans-serif; font-size: .95rem; color: var(--text);
+      background: var(--cream); outline: none; transition: border-color var(--transition);
+    }
+    .newsletter-input:focus { border-color: var(--primary); }
+    .newsletter-input::placeholder { color: var(--text-muted); }
+    .newsletter-perks { display: flex; flex-direction: column; gap: .6rem; margin-top: 1rem; }
+    .newsletter-perk { display: flex; align-items: center; gap: .6rem; font-size: .85rem; color: var(--text-muted); }
+    .perk-check { color: var(--accent); font-size: 1rem; font-weight: 700; }
+
+    .footer { background: var(--primary-dark); color: rgba(255,255,255,.8); padding: 5rem 0 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand { display: flex; flex-direction: column; gap: 1.25rem; }
+    .footer-brand-logo { display: flex; align-items: center; gap: .75rem; }
+    .footer-brand-mark { width: 38px; height: 38px; background: var(--primary); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--white); }
+    .footer-brand-name span { color: var(--accent-light); }
+    .footer-desc { font-size: .875rem; line-height: 1.75; max-width: 280px; }
+    .footer-socials { display: flex; gap: .75rem; }
+    .footer-social { width: 38px; height: 38px; background: rgba(255,255,255,.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: var(--transition); cursor: pointer; }
+    .footer-social:hover { background: var(--primary); }
+    .footer-col-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 1.25rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: .65rem; }
+    .footer-links a { font-size: .875rem; transition: color var(--transition); }
+    .footer-links a:hover { color: var(--accent-light); }
+    .footer-contact { display: flex; flex-direction: column; gap: .875rem; }
+    .footer-contact-item { display: flex; gap: .75rem; align-items: flex-start; font-size: .875rem; }
+    .footer-contact-icon { color: var(--accent-light); margin-top: 2px; flex-shrink: 0; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: .8rem; }
+    .footer-bottom-links { display: flex; gap: 1.5rem; }
+    .footer-bottom-links a:hover { color: var(--accent-light); }
+
+    @media (max-width: 1024px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions .btn { display: none; }
+      .nav-hamburger { display: flex; }
+      .mobile-drawer { display: flex; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-visual { display: none; }
+      .hero-content { padding-block: 5rem 4rem; }
+      .product-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { display: none; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .newsletter-inner { grid-template-columns: 1fr; padding: 2rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (min-width: 481px) and (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .testi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="mainNav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo" aria-label="Home n More">
+        <div class="nav-logo-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+        <span class="nav-logo-text">Home n <span>More</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#categories">Shop</a></li>
+        <li><a href="#products">New Arrivals</a></li>
+        <li><a href="#why">Our Story</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#newsletter">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-outline" style="padding:.65rem 1.5rem;font-size:.85rem;">Sign In</button>
+        <button class="btn btn-primary" style="padding:.65rem 1.5rem;font-size:.85rem;">Shop Now</button>
+      </div>
+      <button class="nav-hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#categories" onclick="closeDrawer()">Shop</a>
+    <a href="#products" onclick="closeDrawer()">New Arrivals</a>
+    <a href="#why" onclick="closeDrawer()">Our Story</a>
+    <a href="#testimonials" onclick="closeDrawer()">Reviews</a>
+    <a href="#newsletter" onclick="closeDrawer()">Contact</a>
+    <button class="btn btn-primary" style="align-self:flex-start;margin-top:1rem;">Shop Now</button>
+  </div>
+
+  <section class="hero" id="home">
+    <div class="container" style="display:contents;">
+      <div class="hero-content container" style="display:flex;flex-direction:column;gap:1.75rem;padding-block:5rem;">
+        <div class="hero-badge">New Collection 2026</div>
+        <h1 class="hero-title">Your Home,<br><em>Beautifully</em><br>Imagined</h1>
+        <p class="hero-desc">Discover curated furniture, decor, and lifestyle essentials crafted for the way you really live. Every piece tells a story &mdash; make it yours.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary">Explore Collection</button>
+          <button class="btn btn-outline">View Lookbook</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-value">12K+</div><div class="stat-label">Happy Homes</div></div>
+          <div><div class="stat-value">850+</div><div class="stat-label">Curated Items</div></div>
+          <div><div class="stat-value">4.9&#9733;</div><div class="stat-label">Avg. Rating</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div style="width:90%;max-width:520px;position:relative;">
+          <div class="hero-img-wrap">
+            <svg class="hero-svg-room" viewBox="0 0 520 390" xmlns="http://www.w3.org/2000/svg">
+              <rect width="520" height="390" fill="#f3ebe0"/>
+              <rect x="0" y="0" width="520" height="240" fill="#fdf8f3"/>
+              <rect x="0" y="240" width="520" height="150" fill="#e8ddd0"/>
+              <rect x="0" y="240" width="520" height="3" fill="#d4c8b8"/>
+              <rect x="60" y="243" width="520" height="1.5" fill="#cfc3b3" opacity=".5"/>
+              <rect x="0" y="280" width="520" height="1.5" fill="#cfc3b3" opacity=".5"/>
+              <rect x="0" y="320" width="520" height="1.5" fill="#cfc3b3" opacity=".5"/>
+              <rect x="0" y="360" width="520" height="1.5" fill="#cfc3b3" opacity=".5"/>
+              <rect x="0" y="237" width="520" height="6" fill="#d4c0aa"/>
+              <rect x="55" y="55" width="110" height="140" rx="4" fill="#fff" stroke="#e0d4c8" stroke-width="2"/>
+              <rect x="65" y="65" width="90" height="120" rx="2" fill="#e8d8c0"/>
+              <ellipse cx="110" cy="120" rx="28" ry="36" fill="#7a3200" opacity=".5"/>
+              <ellipse cx="110" cy="105" rx="16" ry="24" fill="#532100" opacity=".7"/>
+              <circle cx="110" cy="88" r="8" fill="#c98a4b" opacity=".8"/>
+              <rect x="110" y="210" width="300" height="70" rx="10" fill="#532100"/>
+              <rect x="110" y="200" width="300" height="18" rx="8" fill="#6b3a1f"/>
+              <rect x="125" y="206" width="80" height="40" rx="6" fill="#7a3200"/>
+              <rect x="220" y="206" width="80" height="40" rx="6" fill="#7a3200"/>
+              <rect x="315" y="206" width="80" height="40" rx="6" fill="#7a3200"/>
+              <rect x="120" y="278" width="14" height="12" rx="3" fill="#3a1700"/>
+              <rect x="386" y="278" width="14" height="12" rx="3" fill="#3a1700"/>
+              <rect x="175" y="295" width="170" height="10" rx="4" fill="#c98a4b"/>
+              <rect x="185" y="305" width="8" height="25" rx="2" fill="#a06828"/>
+              <rect x="327" y="305" width="8" height="25" rx="2" fill="#a06828"/>
+              <rect x="175" y="305" width="170" height="4" rx="2" fill="#b07838"/>
+              <rect x="210" y="285" width="40" height="12" rx="2" fill="#fff" opacity=".9"/>
+              <rect x="210" y="283" width="40" height="4" rx="1" fill="#532100" opacity=".6"/>
+              <rect x="288" y="278" width="12" height="20" rx="5" fill="#a06828"/>
+              <ellipse cx="294" cy="276" rx="8" ry="5" fill="#7a3200"/>
+              <rect x="440" y="120" width="6" height="160" rx="3" fill="#c98a4b"/>
+              <polygon points="410,120 476,120 458,90 428,90" fill="#e8b97a"/>
+              <rect x="430" y="88" width="28" height="6" rx="2" fill="#c98a4b"/>
+              <ellipse cx="443" cy="285" rx="22" ry="6" fill="#b8a898"/>
+              <rect x="58" y="220" width="20" height="30" rx="4" fill="#8b6040"/>
+              <rect x="55" y="248" width="26" height="6" rx="2" fill="#7a5030"/>
+              <ellipse cx="68" cy="200" rx="24" ry="28" fill="#4a7c50" opacity=".8"/>
+              <ellipse cx="56" cy="212" rx="16" ry="18" fill="#3d6b43" opacity=".7"/>
+              <ellipse cx="80" cy="208" rx="16" ry="20" fill="#5a8c60" opacity=".7"/>
+              <rect x="355" y="60" width="90" height="110" rx="4" fill="#fff" stroke="#e0d4c8" stroke-width="2"/>
+              <rect x="363" y="68" width="74" height="94" rx="2" fill="#f0e4d4"/>
+              <rect x="380" y="80" width="40" height="60" rx="20" fill="#d4a96a" opacity=".6"/>
+              <rect x="388" y="72" width="24" height="24" rx="12" fill="#c98a4b" opacity=".5"/>
+            </svg>
+          </div>
+          <div class="hero-float-card">
+            <div class="hero-float-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></svg>
+            </div>
+            <div>
+              <div class="hero-float-label">Free Delivery</div>
+              <div class="hero-float-value">Orders over $99</div>
+            </div>
+          </div>
+          <div class="hero-float-card2">
+            <div class="big">15% OFF</div>
+            <div class="small">First order &middot; Use WELCOME15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-bar">
+    <div class="trust-track">
+      <span class="trust-item"><span class="trust-dot"></span>Free Shipping on orders $99+</span>
+      <span class="trust-item"><span class="trust-dot"></span>60-Day Easy Returns</span>
+      <span class="trust-item"><span class="trust-dot"></span>Sustainably Sourced Materials</span>
+      <span class="trust-item"><span class="trust-dot"></span>Lifetime Quality Guarantee</span>
+      <span class="trust-item"><span class="trust-dot"></span>Expert Interior Advice</span>
+      <span class="trust-item"><span class="trust-dot"></span>Secure Checkout</span>
+      <span class="trust-item"><span class="trust-dot"></span>Handcrafted with Care</span>
+      <span class="trust-item"><span class="trust-dot"></span>Free Shipping on orders $99+</span>
+      <span class="trust-item"><span class="trust-dot"></span>60-Day Easy Returns</span>
+      <span class="trust-item"><span class="trust-dot"></span>Sustainably Sourced Materials</span>
+      <span class="trust-item"><span class="trust-dot"></span>Lifetime Quality Guarantee</span>
+      <span class="trust-item"><span class="trust-dot"></span>Expert Interior Advice</span>
+      <span class="trust-item"><span class="trust-dot"></span>Secure Checkout</span>
+      <span class="trust-item"><span class="trust-dot"></span>Handcrafted with Care</span>
+    </div>
+  </div>
+
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Browse by Room</span>
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">From living rooms to cozy nooks &mdash; find curated pieces for every corner of your home.</p>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="cat-name">Living Room</div><div class="cat-count">248 items</div>
+          <div class="cat-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 012 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></div>
+          <div class="cat-name">Bedroom</div><div class="cat-count">194 items</div>
+          <div class="cat-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+          <div class="cat-name">Kitchen &amp; Dining</div><div class="cat-count">176 items</div>
+          <div class="cat-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
+          <div class="cat-name">Decor &amp; Accents</div><div class="cat-count">312 items</div>
+          <div class="cat-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">New Arrivals</span>
+        <h2 class="section-title">Curated Just for You</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Handpicked pieces that blend timeless design with everyday comfort.</p>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-img">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="300" fill="#f0e8d8"/>
+              <rect x="80" y="140" width="240" height="100" rx="12" fill="#532100"/>
+              <rect x="80" y="128" width="240" height="20" rx="8" fill="#6b3a1f"/>
+              <rect x="75" y="130" width="20" height="110" rx="6" fill="#6b3a1f"/>
+              <rect x="305" y="130" width="20" height="110" rx="6" fill="#6b3a1f"/>
+              <rect x="100" y="140" width="80" height="50" rx="6" fill="#7a3200"/>
+              <rect x="220" y="140" width="80" height="50" rx="6" fill="#7a3200"/>
+              <rect x="100" y="238" width="18" height="15" rx="3" fill="#3a1700"/>
+              <rect x="282" y="238" width="18" height="15" rx="3" fill="#3a1700"/>
+              <rect x="120" y="80" width="160" height="14" rx="3" fill="#d4c0aa"/>
+              <ellipse cx="200" cy="100" rx="30" ry="40" fill="#4a7c50" opacity=".75"/>
+              <ellipse cx="185" cy="112" rx="20" ry="26" fill="#3d6b43" opacity=".7"/>
+            </svg>
+            <span class="product-badge">New</span>
+            <button class="product-wishlist" aria-label="Add to wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Seating</div>
+            <div class="product-name">Mahogany Wing Armchair</div>
+            <div class="product-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span>4.9 (124 reviews)</span></div>
+            <div class="product-footer">
+              <div><span class="product-price">$649</span><span class="product-price-old">$820</span></div>
+              <button class="product-add" aria-label="Add to cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="300" fill="#e8ddd0"/>
+              <rect x="90" y="155" width="220" height="14" rx="5" fill="#c98a4b"/>
+              <rect x="100" y="169" width="200" height="6" rx="2" fill="#b07838"/>
+              <rect x="105" y="175" width="12" height="70" rx="4" fill="#a06828"/>
+              <rect x="283" y="175" width="12" height="70" rx="4" fill="#a06828"/>
+              <rect x="118" y="243" width="164" height="6" rx="2" fill="#b07838"/>
+              <rect x="145" y="135" width="60" height="22" rx="3" fill="#fff" opacity=".9"/>
+              <rect x="145" y="131" width="60" height="6" rx="2" fill="#532100" opacity=".5"/>
+              <rect x="155" y="125" width="40" height="5" rx="1" fill="#7a3200" opacity=".4"/>
+              <rect x="255" y="115" width="18" height="42" rx="8" fill="#a06828"/>
+              <ellipse cx="264" cy="113" rx="12" ry="7" fill="#7a3200"/>
+              <ellipse cx="260" cy="108" rx="8" ry="10" fill="#4a7c50" opacity=".8"/>
+            </svg>
+            <span class="product-badge">Sale</span>
+            <button class="product-wishlist" aria-label="Add to wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Tables</div>
+            <div class="product-name">Artisan Walnut Coffee Table</div>
+            <div class="product-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span>4.8 (98 reviews)</span></div>
+            <div class="product-footer">
+              <div><span class="product-price">$389</span><span class="product-price-old">$490</span></div>
+              <button class="product-add" aria-label="Add to cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="300" fill="#f5f0e8"/>
+              <rect x="192" y="60" width="16" height="200" rx="5" fill="#c98a4b"/>
+              <polygon points="150,60 250,60 235,30 165,30" fill="#fff9ee" stroke="#d4a96a" stroke-width="2"/>
+              <rect x="165" y="28" width="70" height="8" rx="3" fill="#c98a4b"/>
+              <ellipse cx="200" cy="265" rx="42" ry="10" fill="#b8a898"/>
+              <ellipse cx="200" cy="60" rx="55" ry="30" fill="#ffe8a0" opacity=".35"/>
+              <rect x="240" y="195" width="100" height="8" rx="3" fill="#a06828"/>
+              <rect x="252" y="203" width="8" height="55" rx="3" fill="#8a5820"/>
+              <rect x="320" y="203" width="8" height="55" rx="3" fill="#8a5820"/>
+              <rect x="240" y="255" width="100" height="5" rx="2" fill="#a06828"/>
+              <rect x="275" y="180" width="30" height="16" rx="3" fill="#532100" opacity=".8"/>
+            </svg>
+            <button class="product-wishlist" aria-label="Add to wishlist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+          </div>
+          <div class="product-body">
+            <div class="product-category">Lighting</div>
+            <div class="product-name">Amber Arc Floor Lamp</div>
+            <div class="product-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><span>4.7 (56 reviews)</span></div>
+            <div class="product-footer">
+              <div><span class="product-price">$229</span><span class="product-price-old">$290</span></div>
+              <button class="product-add" aria-label="Add to cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:3rem;">
+        <button class="btn btn-outline">View All Products</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="why" id="why">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-visual">
+          <div class="why-img-card" style="background:var(--sand);">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="200" height="280" fill="#f3ebe0"/>
+              <rect x="20" y="60" width="160" height="180" rx="8" fill="#532100" opacity=".12"/>
+              <rect x="30" y="70" width="140" height="160" rx="6" fill="#fff" opacity=".7"/>
+              <rect x="40" y="80" width="20" height="60" rx="3" fill="#7a3200"/>
+              <rect x="64" y="90" width="16" height="50" rx="3" fill="#c98a4b"/>
+              <rect x="84" y="85" width="22" height="55" rx="3" fill="#532100"/>
+              <rect x="110" y="92" width="14" height="48" rx="3" fill="#a06828"/>
+              <rect x="128" y="88" width="18" height="52" rx="3" fill="#6b3a1f"/>
+              <rect x="40" y="155" width="120" height="3" rx="1" fill="#d4c0aa"/>
+              <rect x="45" y="160" width="18" height="40" rx="3" fill="#c98a4b"/>
+              <rect x="67" y="165" width="14" height="35" rx="3" fill="#532100"/>
+              <rect x="85" y="158" width="16" height="42" rx="3" fill="#a06828"/>
+              <circle cx="120" cy="170" r="15" fill="#4a7c50" opacity=".7"/>
+              <rect x="140" y="162" width="12" height="38" rx="3" fill="#7a3200"/>
+            </svg>
+          </div>
+          <div class="why-img-card" style="background:var(--primary-pale);">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="200" height="280" fill="#f9ede5"/>
+              <rect x="70" y="170" width="60" height="80" rx="30" fill="#532100" opacity=".85"/>
+              <rect x="60" y="163" width="80" height="12" rx="5" fill="#6b3a1f"/>
+              <line x1="100" y1="165" x2="100" y2="60" stroke="#4a7c50" stroke-width="3"/>
+              <line x1="100" y1="130" x2="70" y2="80" stroke="#4a7c50" stroke-width="2.5"/>
+              <line x1="100" y1="110" x2="130" y2="70" stroke="#4a7c50" stroke-width="2.5"/>
+              <ellipse cx="80" cy="70" rx="22" ry="14" fill="#4a7c50" opacity=".8" transform="rotate(-30 80 70)"/>
+              <ellipse cx="122" cy="62" rx="22" ry="14" fill="#5a8c60" opacity=".8" transform="rotate(25 122 62)"/>
+              <ellipse cx="100" cy="52" rx="18" ry="12" fill="#3d6b43" opacity=".9"/>
+            </svg>
+          </div>
+          <div class="why-badge"><div class="num">10+</div><div class="lbl">Years Curating Homes</div></div>
+        </div>
+        <div class="why-content">
+          <div>
+            <span class="section-label">Why Home n More</span>
+            <h2 class="section-title" style="margin-top:.75rem;">We Don&rsquo;t Just Sell Furniture.<br>We Shape Lifestyles.</h2>
+            <div class="divider" style="margin-top:1.25rem;"></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><div class="why-item-title">Premium Quality Guarantee</div><div class="why-item-desc">Every item passes our 18-point quality inspection. We stand behind every piece with a no-questions lifetime guarantee.</div></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="why-item-title">White-Glove Delivery</div><div class="why-item-desc">We deliver, unpack, and set up every piece exactly where you want it. No extra charge, no headaches.</div></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+            <div><div class="why-item-title">Sustainably Curated</div><div class="why-item-desc">We partner with artisans who use responsibly sourced wood, recycled metals, and eco-friendly textiles &mdash; good for your home and the planet.</div></div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#532100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div><div class="why-item-title">Expert Design Consultants</div><div class="why-item-desc">Our in-house stylists offer free 30-minute virtual consultations to help you find your perfect look.</div></div>
+          </div>
+          <button class="btn btn-primary" style="width:fit-content;">Book a Free Consultation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Customer Love</span>
+        <h2 class="section-title">Real Homes, Real Stories</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle" style="color:rgba(255,255,255,.7);">Over 12,000 families have transformed their spaces with Home n More.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-text">&ldquo;I completely redecorated my living room and could not be happier. The quality of the pieces is extraordinary &mdash; they look even better in person than in photos.&rdquo;</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(201,138,75,.3);color:#e8b97a;">SM</div>
+            <div><div class="testi-name">Sarah Mitchell</div><div class="testi-role">Interior Designer, New York</div></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-text">&ldquo;The Mahogany Wing Armchair is worth every penny. Solid construction, stunning fabric, and it arrived faster than expected. My new go-to for everything home-related.&rdquo;</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(90,140,96,.3);color:#7ec882;">JP</div>
+            <div><div class="testi-name">James Parker</div><div class="testi-role">Architect, Chicago</div></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-text">&ldquo;From browsing to delivery, the experience was flawless. The free consultation helped me pick pieces I never would have considered. My bedroom now looks like a magazine.&rdquo;</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:rgba(83,33,0,.4);color:#e8b97a;">RL</div>
+            <div><div class="testi-name">Rachel Liu</div><div class="testi-role">Marketing Director, San Francisco</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter" id="newsletter">
+    <div class="container">
+      <div class="newsletter-inner">
+        <div>
+          <span class="section-label">Stay Inspired</span>
+          <h2 class="section-title" style="margin-top:.6rem;font-size:clamp(1.5rem,3vw,2.2rem);">Get 15% Off Your First Order</h2>
+          <p style="color:var(--text-muted);margin-top:.75rem;font-size:.95rem;max-width:380px;">Join 50,000+ design lovers who receive exclusive deals, styling tips, and early access to new arrivals.</p>
+          <div class="newsletter-perks">
+            <div class="newsletter-perk"><span class="perk-check">&#10003;</span> Exclusive member discounts</div>
+            <div class="newsletter-perk"><span class="perk-check">&#10003;</span> Early access to new collections</div>
+            <div class="newsletter-perk"><span class="perk-check">&#10003;</span> Interior styling inspiration</div>
+          </div>
+        </div>
+        <div>
+          <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required aria-label="Email address" />
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+          <p style="font-size:.75rem;color:var(--text-muted);margin-top:1rem;">No spam, ever. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-logo">
+            <div class="footer-brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></div>
+            <span class="footer-brand-name">Home n <span>More</span></span>
+          </div>
+          <p class="footer-desc">Curating beautiful spaces since 2014. We believe every home deserves to be a sanctuary &mdash; and we&rsquo;re here to help you build yours.</p>
+          <div class="footer-socials">
+            <a class="footer-social" href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+            <a class="footer-social" href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+            <a class="footer-social" href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Shop</div>
+          <ul class="footer-links">
+            <li><a href="#">Living Room</a></li><li><a href="#">Bedroom</a></li>
+            <li><a href="#">Kitchen &amp; Dining</a></li><li><a href="#">Decor &amp; Accents</a></li>
+            <li><a href="#">Lighting</a></li><li><a href="#">Outdoor</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Help</div>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li><li><a href="#">Shipping &amp; Delivery</a></li>
+            <li><a href="#">Returns &amp; Refunds</a></li><li><a href="#">Track Your Order</a></li>
+            <li><a href="#">FAQ</a></li><li><a href="#">Contact Support</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Contact Us</div>
+          <div class="footer-contact">
+            <div class="footer-contact-item"><span class="footer-contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span>142 Design District Blvd,<br>New York, NY 10001</span></div>
+            <div class="footer-contact-item"><span class="footer-contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.29-1.29a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span><span>+1 (800) 555-HOME</span></div>
+            <div class="footer-contact-item"><span class="footer-contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span>hello@homenmore.com</span></div>
+            <div class="footer-contact-item"><span class="footer-contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>Mon&ndash;Sat: 9am&ndash;7pm EST</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Home n More. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+
+    const hamburger = document.getElementById('hamburgerBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    let drawerOpen = false;
+    hamburger.addEventListener('click', () => {
+      drawerOpen = !drawerOpen;
+      drawer.classList.toggle('open', drawerOpen);
+      hamburger.setAttribute('aria-expanded', drawerOpen);
+    });
+    function closeDrawer() { drawerOpen = false; drawer.classList.remove('open'); }
+    document.addEventListener('click', (e) => {
+      if (drawerOpen && !drawer.contains(e.target) && !hamburger.contains(e.target)) closeDrawer();
+    });
+
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const input = e.target.querySelector('input');
+      btn.textContent = 'Subscribed!';
+      btn.style.background = '#4a7c50';
+      input.value = '';
+      setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 3500);
+    }
+
+    document.querySelectorAll('.product-wishlist').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const svg = this.querySelector('svg');
+        const active = svg.getAttribute('fill') === '#532100';
+        svg.setAttribute('fill', active ? 'none' : '#532100');
+      });
+    });
+
+    document.querySelectorAll('.product-add').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const orig = this.innerHTML;
+        this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        this.style.background = '#4a7c50';
+        setTimeout(() => { this.innerHTML = orig; this.style.background = ''; }, 1800);
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.cat-card, .product-card, .testi-card, .why-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity .5s ease, transform .5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
